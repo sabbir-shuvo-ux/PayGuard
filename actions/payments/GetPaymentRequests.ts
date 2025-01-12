@@ -22,12 +22,14 @@ export const GetPaymentRequests = async () => {
   const user = await getDataFormDB(token.id);
   if (!user) throw new Error("User not valid");
 
-  // fetch data based on role
+  // Fetch data based on role and sort by updatedAt in descending order
   let data;
   if (user.role === "admin") {
-    data = await PaymentRequest.find().lean();
+    data = await PaymentRequest.find().sort({ updatedAt: -1 }).lean(); // Descending order
   } else if (user.role === "user") {
-    data = await PaymentRequest.find({ user_id: user._id }).lean();
+    data = await PaymentRequest.find({ user_id: user._id })
+      .sort({ updatedAt: -1 }) // Descending order
+      .lean();
   }
 
   if (!data || data.length === 0) {
@@ -46,6 +48,6 @@ export const GetPaymentRequests = async () => {
   return {
     success: true,
     data: formattedData,
-    isAdmin: user.role === "admin" ? true : false, // check user admin or not
+    isAdmin: user.role === "admin" ? true : false, // Check if user is admin
   };
 };
