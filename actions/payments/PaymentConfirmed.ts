@@ -4,7 +4,7 @@ import { DBConnection } from "@/config/DBConnection";
 import { getDataFromToken } from "@/lib/getDataFromToken";
 import PaymentRequest from "@/models/PaymentModel";
 import { revalidatePath } from "next/cache";
-import { SendMail } from "../sendMail";
+import { SendMail } from "@/actions/sendMail";
 
 export const PaymentConfirmed = async (id: string) => {
   // database connection and validate the token
