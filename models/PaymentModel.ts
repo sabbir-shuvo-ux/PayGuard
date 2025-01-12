@@ -1,6 +1,16 @@
-import { Schema, model, models } from "mongoose";
+import { Document, Schema, Types, model, models } from "mongoose";
 
-const PaymentSchema = new Schema(
+// sachema type
+export interface IPaymentType extends Document {
+  title: string;
+  amount: Types.Decimal128;
+  status: "pending" | "approved" | "rejected";
+  user_id: Types.ObjectId;
+  user_email: string;
+}
+
+// Payment Schema
+const PaymentSchema = new Schema<IPaymentType>(
   {
     title: {
       type: String,
@@ -20,11 +30,17 @@ const PaymentSchema = new Schema(
       ref: "User",
       required: true,
     },
+    user_email: {
+      type: String,
+      ref: "User",
+      required: true,
+    },
   },
   { timestamps: true }
 );
 
 const PaymentRequest =
-  models.payment_request || model("payment_request", PaymentSchema);
+  models.payment_request ||
+  model<IPaymentType>("payment_request", PaymentSchema);
 
 export default PaymentRequest;
