@@ -1,27 +1,25 @@
 "use client";
 
+import { useEffect } from "react";
+import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
+// ui components
 import { Login } from "@/actions/auth/Login";
+import { Signup } from "@/actions/auth/Signup";
+import { FormInput } from "@/components/FormInput";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
+
+// utility function
 import { handleError } from "@/lib/handleError";
+
+// types and schema
 import {
   AuthSchema,
   type AuthSchemaType,
 } from "@/schemas/auth-schema/AuthSchema";
-import { useEffect } from "react";
-import { toast } from "sonner";
-import { Signup } from "@/actions/auth/Signup";
 
 const LoginForm = () => {
   // initialize form
@@ -81,42 +79,22 @@ const LoginForm = () => {
           )}
           className="space-y-6 w-full"
         >
-          <FormField
-            control={form.control}
+          <FormInput
+            form={form}
             name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input
-                    type="email"
-                    placeholder="Enter Your Email"
-                    {...field}
-                  />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
+            placeholder="Enter Your Email"
+            label="Email"
+            type="email"
           />
-          <FormField
-            control={form.control}
+
+          <FormInput
+            form={form}
             name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="Enter Your Password"
-                    {...field}
-                  />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
+            placeholder="Enter Your Password"
+            label="Password"
+            type="password"
           />
+
           <Button
             disabled={form.formState.isSubmitting}
             type="submit"
