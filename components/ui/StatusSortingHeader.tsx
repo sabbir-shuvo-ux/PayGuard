@@ -16,7 +16,7 @@ interface StatusSortingHeaderProps<TData, TValue>
   extends React.HTMLAttributes<HTMLDivElement> {
   column: Column<TData, TValue>;
   title: string;
-  statuses: ("pending" | "processing" | "success" | "failed")[];
+  statuses: ("pending" | "approved" | "rejected")[];
 }
 
 export function StatusSortingHeader<TData, TValue>({

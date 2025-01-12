@@ -1,16 +1,15 @@
-import { payments } from "@/data/tableDummyData";
-import { columns } from "./columns";
+import { Suspense } from "react";
+import PaymentTable from "./PaymentTable";
 import RequestForm from "./RequestForm";
-import { DataTable } from "@/components/ui/data-table";
 
-const AllPayementRequestPage = () => {
+const AllPayementRequestPage = async () => {
   return (
     <section>
       <RequestForm />
 
-      <div className="my-10 py-8 border-y border-red-400">
-        <DataTable columns={columns} data={payments} />
-      </div>
+      <Suspense fallback={<p>Loading...</p>}>
+        <PaymentTable />
+      </Suspense>
     </section>
   );
 };

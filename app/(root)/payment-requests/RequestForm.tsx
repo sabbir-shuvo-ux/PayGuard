@@ -18,7 +18,7 @@ import {
   PaymentRequestSchema,
   type PaymentRequestSchemaType,
 } from "@/schemas/payment-schema/PaymentSchema";
-import { RequtestPayment } from "@/actions/payments/actions";
+import { RequtestPayment } from "@/actions/payments/RequtestPayment";
 
 const RequestForm = () => {
   // initialize form

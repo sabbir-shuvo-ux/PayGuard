@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal, ArrowUpDown } from "lucide-react";
+import { MoreHorizontal } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -13,40 +13,29 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import { DataTableType } from "@/actions/payments/GetPaymentRequests";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "@/components/ui/DataTableColumnHeader";
 import { StatusSortingHeader } from "@/components/ui/StatusSortingHeader";
-
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-export type Payment = {
-  id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
-  email: string;
-};
+import { PaymentConfirmation } from "@/actions/payments/PaymentConfirmation";
 
 // Status color mapping
-const statusColor: Record<
-  "pending" | "processing" | "success" | "failed",
-  string
-> = {
+const statusColor: Record<"pending" | "approved" | "rejected", string> = {
   pending: "text-yellow-500",
-  processing: "text-blue-500",
-  success: "text-green-500",
-  failed: "text-red-500",
+  approved: "text-green-500",
+  rejected: "text-red-500",
 };
 
 // Component for rendering the status with colors
 const StatusCell = ({
   status,
 }: {
-  status: "pending" | "processing" | "success" | "failed";
+  status: "pending" | "approved" | "rejected";
 }) => {
   return <span className={statusColor[status]}>{status}</span>;
 };
 
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<DataTableType>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -70,13 +59,20 @@ export const columns: ColumnDef<Payment>[] = [
     enableHiding: false,
   },
   {
+    accessorKey: "title",
+    id: "title",
+    header: "Title",
+  },
+  {
     accessorKey: "email",
+    id: "email",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Email" />
     ),
   },
   {
     accessorKey: "amount",
+    id: "amount",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Amount" />
     ),
@@ -92,19 +88,19 @@ export const columns: ColumnDef<Payment>[] = [
   },
   {
     accessorKey: "status",
+    id: "status",
     header: ({ column }) => (
       <StatusSortingHeader
         column={column}
         title="Status"
-        statuses={["pending", "processing", "success", "failed"]}
+        statuses={["pending", "approved", "rejected"]}
       />
     ),
     cell: ({ row }) => {
       const status = row.getValue("status") as
         | "pending"
-        | "processing"
-        | "success"
-        | "failed";
+        | "approved"
+        | "rejected";
       return <StatusCell status={status} />;
     },
     enableSorting: true,
@@ -126,14 +122,20 @@ export const columns: ColumnDef<Payment>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Button onClick={() => navigator.clipboard.writeText(payment.id)}>
+              <Button
+                className="w-full"
+                onClick={() => PaymentConfirmation(payment.id, "approved")}
+              >
                 Approved
               </Button>
             </DropdownMenuItem>
+            <DropdownMenuSeparator />
+
             <DropdownMenuItem asChild>
               <Button
+                className="w-full"
                 variant={"destructive"}
-                onClick={() => navigator.clipboard.writeText(payment.id)}
+                onClick={() => PaymentConfirmation(payment.id, "rejected")}
               >
                 Reject
               </Button>
