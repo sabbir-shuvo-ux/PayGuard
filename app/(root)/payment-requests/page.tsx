@@ -1,5 +1,11 @@
+import RequestForm from "./RequestForm";
+
 const AllPayementRequestPage = () => {
-  return <div>AllPayementRequestPage</div>;
+  return (
+    <section>
+      <RequestForm />
+    </section>
+  );
 };
 
 export default AllPayementRequestPage;

@@ -11,7 +11,7 @@ const HomePage = async () => {
 
   return (
     <div>
-      <RequestForm />
+      <p>hello</p>
     </div>
   );
 };
