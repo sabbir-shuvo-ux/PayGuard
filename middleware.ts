@@ -10,6 +10,8 @@ export async function middleware(request: NextRequest) {
   const cookie = request.cookies.get("auth-token")?.value;
   const secret = new TextEncoder().encode(process.env.JWT_SECRET!);
 
+  const currentPath = request.nextUrl.pathname;
+
   try {
     // Verify the JWT if the token exists
     if (cookie) {
@@ -18,7 +20,7 @@ export async function middleware(request: NextRequest) {
 
       if (jwtPayload.id) {
         // Redirect valid users away from "/login" to "/"
-        if (request.nextUrl.pathname.startsWith("/login")) {
+        if (currentPath === "/login") {
           return NextResponse.redirect(new URL("/", request.url));
         }
 
@@ -28,14 +30,14 @@ export async function middleware(request: NextRequest) {
     }
 
     // Redirect unauthenticated users away from protected paths
-    if (request.nextUrl.pathname.startsWith("/login")) {
+    if (currentPath !== "/login") {
       return NextResponse.redirect(new URL("/login", request.url));
     }
   } catch (err) {
     console.log("Error verifying token:", err);
 
     // Redirect to "/login" if an error occurs and the user isn't already on "/login"
-    if (request.nextUrl.pathname.startsWith("/login")) {
+    if (currentPath !== "/login") {
       return NextResponse.redirect(new URL("/login", request.url));
     }
   }
