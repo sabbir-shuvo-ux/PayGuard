@@ -124,7 +124,9 @@ export const columns: ColumnDef<DataTableType>[] = [
             <DropdownMenuItem asChild>
               <Button
                 className="w-full"
-                onClick={() => PaymentConfirmation(payment.id, "approved")}
+                onClick={() =>
+                  PaymentConfirmation(payment.id, "approved", payment.amount)
+                }
               >
                 Approved
               </Button>

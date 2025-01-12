@@ -5,10 +5,12 @@ import { getDataFormDB } from "@/lib/getDataFromDB";
 import { getDataFromToken } from "@/lib/getDataFromToken";
 import PaymentRequest from "@/models/PaymentModel";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export const PaymentConfirmation = async (
   id: string,
-  type: "approved" | "rejected"
+  type: "approved" | "rejected",
+  amount?: number
 ) => {
   // database connection and validate the token
   await DBConnection();
@@ -24,6 +26,10 @@ export const PaymentConfirmation = async (
   // Validate the update type and perform the operation
   if (!["approved", "rejected"].includes(type)) {
     throw new Error("Invalid status type");
+  }
+
+  if (type === "approved") {
+    redirect(`/stripe?email=${user.email}&amount=${amount}&id=${id}`);
   }
 
   const res = await PaymentRequest.findByIdAndUpdate(id, { status: type });
