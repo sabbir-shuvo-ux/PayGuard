@@ -1,8 +1,5 @@
 import { GetPaymentRequests } from "@/actions/payments/GetPaymentRequests";
-import { DataTable } from "@/components/ui/data-table";
 import { handleError } from "@/lib/handleError";
-import { columns } from "./columns";
-import { cn } from "@/lib/utils";
 import PaymentDataTable from "./PaymentDataTable";
 
 const PaymentTable = async () => {

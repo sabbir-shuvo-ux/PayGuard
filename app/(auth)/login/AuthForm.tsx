@@ -34,10 +34,10 @@ const LoginForm = () => {
   // handle form submit
   async function onSubmit(
     data: AuthSchemaType,
-    event: React.BaseSyntheticEvent<object, any, any>
+    event?: React.BaseSyntheticEvent
   ) {
     try {
-      const submitEvent = event.nativeEvent as SubmitEvent;
+      const submitEvent = event?.nativeEvent as SubmitEvent;
       const actionType = (submitEvent.submitter as HTMLButtonElement)?.value;
 
       // handle login if actionType is login
@@ -74,9 +74,7 @@ const LoginForm = () => {
     <div className="max-w-lg w-full">
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit((data, event) =>
-            onSubmit(data, event as React.BaseSyntheticEvent<object, any, any>)
-          )}
+          onSubmit={form.handleSubmit((data, event) => onSubmit(data, event))}
           className="space-y-6 w-full"
         >
           <FormInput

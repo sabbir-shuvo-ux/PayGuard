@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
+import { handleError } from "./handleError";
 
 // interface for the token payload
 interface Tokenpayload {
@@ -24,8 +25,9 @@ export const getDataFromToken = async (): Promise<Tokenpayload | null> => {
 
     // Return the decoded payload if verification is successful
     return decodedToken;
-  } catch (err: any) {
-    console.log(err);
+  } catch (err: unknown) {
+    const res = handleError(err);
+    console.log(res.error);
 
     // Return null if token verification fails
     return null;

@@ -17,7 +17,7 @@ type FormItemType<TSchema extends FieldValues> = {
   labelClassName?: string;
 };
 
-export const FormInput = <TSchema extends Record<string, any>>({
+export const FormInput = <TSchema extends FieldValues>({
   form,
   name,
   label,
